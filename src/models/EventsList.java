@@ -1,9 +1,11 @@
 package models;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +29,6 @@ public class EventsList {
                 String line ;
                 while ((line = br.readLine()) != null){
                     arr.add(addEventFromFile(line));
-                    
                 }
             }
         } catch (FileNotFoundException e) {
@@ -49,17 +50,26 @@ public class EventsList {
     
     
     public void addEvent(Event event) {
-        int maxID = 0;
-        for (int i = 0; i < listEvent.size(); i++){
-            int currentID = listEvent.get(i).getEventID();
-            if (currentID > maxID) {
-                maxID = currentID;
+        try {
+            int maxID = 0;
+            for (Event e : listEvent) {
+                int currentID = e.getEventID();
+                if (currentID > maxID) {
+                    maxID = currentID;
+                }
             }
+            event.setEventID(maxID + 1);
+            listEvent.add(event);
+            FileWriter fileWriter = new FileWriter("events.dat", true);
+            try (BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+                bufferedWriter.write(event.toString());
+                bufferedWriter.newLine();
+            }
+        } catch (IOException e) {
+            
         }
-        event.setEventID(maxID + 1);
-        listEvent.add(event);
-    }
-    
+}
+
     public void updateEvent(Event event){
         int size = listEvent.size();
         for (int i = 0; i < size; i++) {
@@ -87,8 +97,9 @@ public class EventsList {
         return null;
     }
     
-    public void deleteEvent(Event event){
+    public List<Event> deleteEvent(Event event){
         listEvent.remove(event);
+        return null;
     }
     
     public List<Event> getEventList(){
@@ -124,6 +135,8 @@ public class EventsList {
         }return event;
     }
     
-            
+    public boolean isExistEvent(int ID) {
+        return listEvent.stream().anyMatch((event) -> (event.getEventID()== ID));
+    }
     
 }

@@ -11,6 +11,15 @@ public class Event {
     private LocalDate dateOfEnd;
     private int eventAttendence;
     private boolean status;
+    private boolean deleteFlag;
+
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
 
     public Event() {
     }
@@ -35,6 +44,10 @@ public class Event {
     }
 
     Event(int parseInt, String string, String string0, LocalDate localDate, boolean parseBoolean) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Event(String eventName, LocalDate eventDate, String eventLocation) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -101,12 +114,21 @@ public class Event {
     
     @Override
     public String toString() {
-        return "Event { EventID =  " + eventID +
-               ", EventName = " + eventName +
-               ", EventLocation = " + eventLocation +
-               ", DateOfStart = " + dateOfStart.format(DateTimeFormatter.ofPattern("YYYY-MM-DD")) +
-               ", DateOfEnd = " + dateOfEnd.format(DateTimeFormatter.ofPattern("YYYY-MM-DD")) +
-               ", EventAttendence = " + eventAttendence +
-               ", Status = " + statusToString(status)+ "}";
+//        return String.format("%d : %s : %s : %s : %s : %d : %b", eventID, eventName, eventLocation, dateOfStart, dateOfEnd, eventAttendence, status);
+//        return "Event { EventID =  " + eventID +
+//               ", EventName = " + eventName +
+//               ", EventLocation = " + eventLocation +
+//               ", DateOfStart = " + dateOfStart +
+//               ", DateOfEnd = " + dateOfEnd +
+//               ", EventAttendence = " + eventAttendence +
+//               ", Status = " + statusToString(status)+ "}";
+        return String.format("|%10d|%15s|%30s|%15s|%20d|%15s|\n",
+                    eventID,
+                    eventName,
+                    dateOfEnd + " -> " + dateOfStart,
+                    eventLocation,
+                    eventAttendence,
+                    statusToString(status));
+
     }
 }

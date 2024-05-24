@@ -1,6 +1,9 @@
 package controllers;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import models.Event;
 import models.EventsList;
@@ -9,9 +12,13 @@ import views.Menu;
 
 public class EventsManagement extends Menu {
     
-    static String[] mainMenu = {"Create An Event", "Search event",
-        "Add new event", "Update event", 
-        "Delete event", "Exit"};
+    static String[] mainMenu = {"Create a new event", 
+                                "Check if an event exists",
+                                "Search for event information by location", 
+                                "Update event", 
+                                "Delete event",
+                                "Print the list of events from the file",
+                                "Others - Quit"};
     private static EventsList eventsList;
     private static Event event;
 
@@ -31,7 +38,6 @@ public class EventsManagement extends Menu {
                 }else{
                     System.out.println("Create fail1");
                 }
-                
                 break;
             case 2:
                 checkExists();
@@ -57,27 +63,10 @@ public class EventsManagement extends Menu {
                 break;
             case 6:
                 printList();
+                break;
             case 7:
                 System.exit(0);
         }
-    }
-
-    public void displayEventList(){
-        eventsList.displayEventList(eventsList.getEventList());
-    }
-    private boolean doDelete(){
-        try {
-            displayEventList();
-            int eveID = Helper.getInt("Enter Event ID you want to delete");
-            Event existEvent = eventsList.getEventByID(eveID);
-            if(existEvent == null){
-                System.out.println("Not Found !!!");
-                return false;
-            }
-            eventsList.deleteEvent(existEvent);
-        } catch (Exception e) {
-            return false;
-        }return true;
     }
 
     private boolean createNewEvent() {
@@ -90,12 +79,30 @@ public class EventsManagement extends Menu {
             boolean status = Helper.getStatus("Enter status 1 - Available, 0 - Not Available");
             Event event = new Event(eventName, eventLocation, dateOfStart, dateOfEnd, eventAttendence, status);
             eventsList.addEvent(event);
+            
         } catch (Exception e) {
             return false;
         }
         return true;
     }
-
+    private void checkExists() {
+        int ID = Helper.getInt("Enter ID event");
+        if (eventsList.isExistEvent(ID)) {
+            System.out.println("Exist Event");
+        } else {
+            System.out.println("No Event Found!");
+        }
+    }
+    private void searchByLocation(){
+        String location = Helper.getString("Enter event location");
+        List<Event> kq = eventsList.searchEvent(eventsList.getEventList(), 
+                s->s.getEventLocation().equalsIgnoreCase(location));
+        if (kq.isEmpty())
+            System.out.println("Not Found !!!");
+        else{
+            eventsList.displayEventList(kq);
+        }
+    }
     private boolean updateEvent() {
         try {
             displayEventList();
@@ -116,132 +123,71 @@ public class EventsManagement extends Menu {
             return false;
         }return true;
     }
-    
-    private void doSearching() {
-        String[] menuSearch = {"Search by ID", "Search by Event Name", "Search by Location",
-            "Search by Date Of Start Event", "Search by Date Of End Event", "Search by Event Attendence", 
-            "Search by Status", "Exist"
-        };
-        new Menu("Search Option", menuSearch) {
-            @Override
-            public void execute(int n) {
-                switch(n) {
-                    case 1:
-                        searchByID();
-                        break;
-                    case 2:
-                        searchByEventName();
-                        break;
-                    case 3:
-                        searchByLocation();
-                        break;
-                    case 4:
-                        searchByDateOfStart();
-                        break;
-                    case 5:
-                        searchByDateOfEnd();
-                        break;
-                    case 6:
-                        searchByEventAttendence();
-                        break;
-                    case 7:
-                        searchByStatus();
-                        break;
-                    case 8:
-                        System.out.println("Exit search");
-                        new EventsManagement(eventsList).run();
-                }
+    private boolean doDelete(){
+        try {
+            displayEventList();
+            int eveID = Helper.getInt("Enter Event ID you want to delete");
+            Event existEvent = eventsList.getEventByID(eveID);
+            if(existEvent == null){
+                System.out.println("Not Found !!!");
+                return false;
             }
-        }.run();
+            eventsList.deleteEvent(existEvent);
+        } catch (Exception e) {
+            return false;
+        }return true;
     }
-    
-    private void searchByID(){
-        int id = Helper.getInt("Enter event ID");
-        List<Event> kq = eventsList.searchEvent(eventsList.getEventList(),
-                s->s.getEventID() == id);
-        if (kq.size() == 0)
-            System.out.println("Not Found !!!");
-        else{
-            eventsList.displayEventList(kq);
+    private boolean isDelete(int eveID) {
+    try {
+        Event existEvent = eventsList.getEventByID(eveID);
+        if (existEvent == null) {
+            System.out.println("Event not found!");
+            return false;
         }
+        System.out.println("Event found:\n" + existEvent); // Assuming Event class has a proper toString() method
+        return true;
+    } catch (Exception e) {
+        return false;
     }
-    
-    private void searchByEventName(){
-        String eventName = Helper.getString("Enter event name");
-        List<Event> kq = eventsList.searchEvent(eventsList.getEventList(), 
-                s->s.getEventName().equalsIgnoreCase(eventName));
-        if (kq.size() == 0)
-            System.out.println("Not Found !!!");
-        else{
-            eventsList.displayEventList(kq);
-        }
-    }
-    
-    private void searchByLocation(){
-        String location = Helper.getString("Enter event location");
-        List<Event> kq = eventsList.searchEvent(eventsList.getEventList(), 
-                s->s.getEventLocation().equalsIgnoreCase(location));
-        if (kq.size() == 0)
-            System.out.println("Not Found !!!");
-        else{
-            eventsList.displayEventList(kq);
-        }
-    }
-    
-    private void searchByDateOfStart(){
-        LocalDate dateOfStart = Helper.getLocalDate("Enter date of start event");
-        List<Event> kq = eventsList.searchEvent(eventsList.getEventList(), 
-                s->s.getDateOfStart().equals(dateOfStart));
-        if (kq.size() == 0)
-            System.out.println("Not Found !!!");
-        else{
-            eventsList.displayEventList(kq);
-        }
-    }
-    
-    private void searchByDateOfEnd(){
-        LocalDate dateOfEnd = Helper.getLocalDate("Enter date of end event");
-        List<Event> kq = eventsList.searchEvent(eventsList.getEventList(), 
-                s->s.getDateOfEnd().equals(dateOfEnd));
-        if (kq.size() == 0)
-            System.out.println("Not Found !!!");
-        else{
-            eventsList.displayEventList(kq);
-        }
-    }
-    
-    private void searchByEventAttendence(){
-        int at = Helper.getInt("Enter event attendence");
-        List<Event> kq = eventsList.searchEvent(eventsList.getEventList(),
-                s->s.getEventAttendence()== at);
-        if (kq.size() == 0)
-            System.out.println("Not Found !!!");
-        else{
-            eventsList.displayEventList(kq);
-        }
-    }
-    
-    private void searchByStatus(){
-        boolean status = Helper.getStatus("Enter 1 - Available : 0 - Not Available");
-        List<Event> kq = eventsList.searchEvent(eventsList.getEventList(),
-                s->s.getStatus() == status);
-        if (kq.isEmpty())
-            System.out.println("Not Found !!!");
-        else {
-            eventsList.displayEventList(kq);
-        }
-                
-    }
-
-    private void checkExists() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void printList() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
 }
+    private void printList() {
+        
+        List<Event> eventList = eventsList.getEventList();
+        if (eventList.isEmpty()) {
+            System.out.println("No events found.");
+        } else {
+            System.out.println(String.format("|%10s|%15s|%30s|%15s|%20s|%15s|\n",
+                "ID", "NAME", "DATE", "LOCATION", "NUMBER OF ATTENDEES", "STATUS"));
+            eventList.forEach((event) -> {
+                System.out.println(event.toString());
+            });
+        }
+    }
+
+    public void displayEventList(){
+        eventsList.displayEventList(eventsList.getEventList());
+    }
+        
+    public void saveEventsToFile(List<Event> eventsList) {
+        try (FileWriter fileWriter = new FileWriter("events.dat")) {
+            for (Event event : eventsList) {
+                fileWriter.write(event.toString());
+                fileWriter.write(System.lineSeparator()); // Add a newline after each event
+            }
+            System.out.println("Events saved to file.");
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+}
+
+}    
+    
+    
+    
+    
+
+    
+
+    
 
     

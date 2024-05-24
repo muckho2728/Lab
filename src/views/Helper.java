@@ -81,7 +81,7 @@ public class Helper { //This class to handle data type, validate input from user
         }
         return result;
     }
-//----------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
     
     /**
      * This method to get gender from 0 and 1 covert to boolean type
@@ -109,8 +109,19 @@ public class Helper { //This class to handle data type, validate input from user
             }
         }
     }
-
-    public static ArrayList<String> getString(String do_you_want_to_continueY_or_N_, String just_Y_or_N, String yNyn) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//------------------------------------------------------------------------------
+    public static boolean getConfirmExit() {
+        while (true) {
+            String choose = getString("Do you want to exit? (Y or N)");
+            if (choose.equalsIgnoreCase("y")) {
+                return true;
+            }
+            if (choose.equalsIgnoreCase("n")){
+                return false;
+            }
+            System.out.println("Enter only y or n");
+        }
     }
 }
+    
+    
