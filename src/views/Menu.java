@@ -21,7 +21,7 @@ public abstract class Menu {
 //------------------------------------------------------------------------------    
     
     public void display(){
-        System.out.println("");
+        System.out.println("              ");
         System.out.println(title);
         System.out.println("-------------------------------------------");
         for (int i = 0; i<choose.size(); i++) {

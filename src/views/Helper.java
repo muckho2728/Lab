@@ -110,16 +110,25 @@ public class Helper { //This class to handle data type, validate input from user
         }
     }
 //------------------------------------------------------------------------------
-    public static boolean getConfirmExit() {
+    private static boolean getConfirmExit() {
         while (true) {
-            String choose = getString("Do you want to exit? (Y or N)");
-            if (choose.equalsIgnoreCase("y")) {
+            String choice = Helper.getString("Do u want to exit? (Y/N)");
+            if(choice.toLowerCase().equals("y")){
                 return true;
             }
-            if (choose.equalsIgnoreCase("n")){
+            if (choice.toLowerCase().equals("n")) {
                 return false;
             }
-            System.out.println("Enter only y or n");
+            System.out.println("Enter only Y or N");
+        }
+    }
+
+    public static void actionWithConfirmExit(Runnable function){
+        while (true) {
+            function.run();
+            if(getConfirmExit()){
+                break;
+            }
         }
     }
 }
