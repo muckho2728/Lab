@@ -87,6 +87,10 @@ public class User {
                 ", email=" + email +
                 ", activeUser=" + activeUser + '}';
     }
+
+    void setPhoneNumber(String phone) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
         
         
 }

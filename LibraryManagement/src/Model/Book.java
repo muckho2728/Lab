@@ -8,7 +8,7 @@ public class Book {
         private String author;
         private LocalDate publicationYear;
         private String publisher;
-        private double ISBN;
+        private double isbn;
         private boolean activeBook;
 
     public Book() {
@@ -20,7 +20,7 @@ public class Book {
         this.author = author;
         this.publicationYear = publicationYear;
         this.publisher = publisher;
-        this.ISBN = ISBN;
+        this.isbn = ISBN;
         this.activeBook = activeBook;
     }
 
@@ -29,7 +29,7 @@ public class Book {
         this.author = author;
         this.publicationYear = publicationYear;
         this.publisher = publisher;
-        this.ISBN = ISBN;
+        this.isbn = ISBN;
         this.activeBook = activeBook;
     }
 
@@ -78,11 +78,11 @@ public class Book {
     }
 
     public double getISBN() {
-        return ISBN;
+        return isbn;
     }
 
     public void setISBN(double ISBN) {
-        this.ISBN = ISBN;
+        this.isbn = ISBN;
     }
 
     public boolean isActiveBook() {
@@ -100,7 +100,7 @@ public class Book {
                 ", author=" + author + 
                 ", publicationYear=" + publicationYear +
                 ", publisher=" + publisher + 
-                ", ISBN=" + ISBN + 
+                ", ISBN=" + isbn + 
                 ", activeBook=" + activeBook + '}';
     }
 

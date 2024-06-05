@@ -141,5 +141,9 @@ public class Helper { //This class to handle data type, validate input from user
     public static boolean getConfirmation(String are_you_sure_you_want_to_delete_this_book) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public static LocalDate getLocalDate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
     

@@ -1,14 +1,52 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controller;
 
-/**
- *
- * @author admin
- */
-public class LoanController {
-    
+import Model.Borrow;
+import Model.LoanList;
+import View.Helper;
+import View.Menu;
+import java.time.LocalDate;
+import java.util.Map;
+
+public class LoanController extends Menu {
+
+    private final LoanList loanList;
+
+    public LoanController(LoanList loanList) { 
+        this.loanList = loanList;
+    }
+
+    public void borrowBook() {
+        Borrow loan = new Borrow(); 
+        if (loanList.addLoan(loan)) {
+            System.out.println("Book borrowed successfully!");
+        }
+    }
+
+    public void returnBook() {
+        int transactionID = Helper.getInt("Enter Loan Transaction ID to return");
+        LocalDate returnDate = Helper.getLocalDate(""); 
+
+        if (loanList.updateLoan(transactionID, returnDate)) {
+            System.out.println("Book returned successfully!");
+        } else {
+            System.out.println("Error: Loan not found or already returned!");
+        }
+    }
+
+    public void viewLoans() {
+        Map<Integer, Borrow> loans = loanList.getAllLoans();
+        if (loans.isEmpty()) {
+            System.out.println("No loans found!");
+        } else {
+            System.out.println("**Loan Information**");
+            loans.values().forEach((loan) -> {
+                System.out.println(loan); // Use Borrow class toString() for formatted output
+            });
+        }
+    }
+
+    @Override
+    public void execute(int n) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
