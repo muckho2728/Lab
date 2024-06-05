@@ -1,4 +1,11 @@
 package Model;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +19,44 @@ public class UserList {
     }
 
     private Map<Integer, User> readUsersFromFile () {
-        Map<Integer, User> user
+        Map<Integer, User> userMap = new HashMap<>();
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            return userMap;
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))){
+            String line;
+            while ((line = br.readLine()) != null) {
+                if(!line.isEmpty()) {
+                    User user = parseUserFromFile(line);
+                    if (user != null ) {
+                        userMap.put(user.getUserID(), user);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("Error opening file: " + FILE_NAME);
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + FILE_NAME);
+        }
+        return userMap;
+    }
+    
+    private User parseUserFromFile (String line) {
+        String[] data = line.split(" : ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        try {
+            int userID = Integer.parseInt(data[0]);
+            String name = data[1];
+            LocalDate dateOfBirth = LocalDate.parse(data[2], formatter);
+            int phoneNumber = Integer.parseInt(data[3]);
+            String email = data[4];
+            boolean activeUser = Boolean.parseBoolean(data[5]);      
+            return new User(userID, name, dateOfBirth, phoneNumber, email, activeUser);
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing data: " + line);
+            return null; // Handle invalid data gracefully
+        }
     }
     // Add a user (check for duplicate ID)
     public boolean addUser(User user) {
