@@ -11,22 +11,20 @@ public class Event {
     private LocalDate dateOfEnd;
     private int eventAttendence;
     private boolean status;
-    private byte deleteFlag;
+    private boolean deleteFlag;
 
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
 
     public Event() {
     }
-    public Event(int eventID, String eventName, String eventLocation, LocalDate dateOfStart, LocalDate dateOfEnd, int eventAttendence, boolean status) {
-            this.eventID = eventID;
-            this.eventName = eventName;
-            this.eventLocation = eventLocation;
-            this.dateOfStart = dateOfStart;
-            this.dateOfEnd = dateOfEnd;
-            this.eventAttendence = eventAttendence;
-            this.status = status;
-        }
 
-    public Event(int eventID, String eventName, String eventLocation, LocalDate dateOfStart, LocalDate dateOfEnd, int eventAttendence, boolean status, byte deleteFlag) {
+    public Event(int eventID, String eventName, String eventLocation, LocalDate dateOfStart, LocalDate dateOfEnd, int eventAttendence, boolean status) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventLocation = eventLocation;
@@ -34,7 +32,6 @@ public class Event {
         this.dateOfEnd = dateOfEnd;
         this.eventAttendence = eventAttendence;
         this.status = status;
-        this.deleteFlag = deleteFlag;
     }
     
     public Event( String eventName, String eventLocation, LocalDate dateOfStart, LocalDate dateOfEnd, int eventAttendence, boolean status) {
@@ -44,6 +41,14 @@ public class Event {
         this.dateOfEnd = dateOfEnd;
         this.eventAttendence = eventAttendence;
         this.status = status;
+    }
+
+    Event(int parseInt, String string, String string0, LocalDate localDate, boolean parseBoolean) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Event(String eventName, LocalDate eventDate, String eventLocation) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public int getEventID() {
@@ -102,52 +107,28 @@ public class Event {
         this.status = status;
     }
 
-    public byte getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(byte deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-    
     private String statusToString(boolean status){
         String result = status ? "Available" : "Not Available";
         return result;
     }
     
-    private String formartDate (LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        String result = date.format(formatter);
-        return result;
-    }
-    
-    public String convertToLine(){
-        return eventID + " : " + eventName + " : " + eventLocation + " : " +
-               formartDate(dateOfStart) + " : " + formartDate(dateOfEnd) + " : " +
-               eventAttendence + " : " + 
-                status + " : " + deleteFlag;
-//        "1 : j : l : 2023/04/05 : 2023/05/04 : 23 : true : 1"
-    }
-
-
-//    @Override
-//    public String toString() {
-//        return "Event{" + "eventID=" + eventID + ", eventName=" 
-//                + eventName + ", eventLocation=" 
-//                + eventLocation + ", dateOfStart=" 
-//                + dateOfStart + ", dateOfEnd=" 
-//                + dateOfEnd + ", eventAttendence=" 
-//                + eventAttendence + ", status=" 
-//                + statusToString(status) + '}';
-
-//          return eventID + eventName + eventLocation + 
-//                 dateOfStart + dateOfEnd + eventAttendence + statusToString(status);
- //   }
     @Override
-public String toString() {
-    return String.format("Event{" +
-            "ID=%-8d, NAME='%-14s', LOCATION='%-14s', DATE OF START='%-16s', DATE OF END='%-16s', ATTENDEES=%-17d, STATUS='%-16s'}",
-            eventID, eventName, eventLocation, dateOfStart, dateOfEnd, eventAttendence, statusToString(status));
-}
+    public String toString() {
+//        return String.format("%d : %s : %s : %s : %s : %d : %b", eventID, eventName, eventLocation, dateOfStart, dateOfEnd, eventAttendence, status);
+//        return "Event { EventID =  " + eventID +
+//               ", EventName = " + eventName +
+//               ", EventLocation = " + eventLocation +
+//               ", DateOfStart = " + dateOfStart +
+//               ", DateOfEnd = " + dateOfEnd +
+//               ", EventAttendence = " + eventAttendence +
+//               ", Status = " + statusToString(status)+ "}";
+        return String.format("|%10d|%15s|%30s|%15s|%20d|%15s|\n",
+                    eventID,
+                    eventName,
+                    dateOfEnd + " -> " + dateOfStart,
+                    eventLocation,
+                    eventAttendence,
+                    statusToString(status));
 
+    }
 }
