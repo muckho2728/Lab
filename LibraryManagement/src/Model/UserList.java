@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class UserList {
 
-    private static final String FILE_NAME = "Users.dat";
+    private static final String FILE_NAME = "users.dat";
     private final Map<Integer, User> users;
 
     public UserList() {

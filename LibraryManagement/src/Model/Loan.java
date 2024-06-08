@@ -2,7 +2,7 @@ package Model;
 
 import java.time.LocalDate;
 
-public class Borrow {
+public class Loan {
     
         private int transactionID;
         private int bookID;
@@ -10,10 +10,10 @@ public class Borrow {
         private LocalDate borrowDate;
         private LocalDate returnDate;
 
-    public Borrow() {
+    public Loan() {
     }
 
-    public Borrow(int transactionID, int bookID, int userID, LocalDate borrowDate, LocalDate returnDate) {
+    public Loan(int transactionID, int bookID, int userID, LocalDate borrowDate, LocalDate returnDate) {
         this.transactionID = transactionID;
         this.bookID = bookID;
         this.userID = userID;
@@ -21,11 +21,15 @@ public class Borrow {
         this.returnDate = returnDate;
     }
 
-    public Borrow(int bookID, int userID, LocalDate borrowDate, LocalDate returnDate) {
+    public Loan(int bookID, int userID, LocalDate borrowDate, LocalDate returnDate) {
         this.bookID = bookID;
         this.userID = userID;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
+    }
+
+    Loan(String generateLoanId, User user, Book book) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public int getTransactionID() {

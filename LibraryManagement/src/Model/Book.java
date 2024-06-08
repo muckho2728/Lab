@@ -37,6 +37,10 @@ public class Book {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    Book(String bn, String title, String author) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public int getBookID() {
         return bookID;
     }
@@ -102,6 +106,10 @@ public class Book {
                 ", publisher=" + publisher + 
                 ", ISBN=" + isbn + 
                 ", activeBook=" + activeBook + '}';
+    }
+
+    void setTitle(String newTitle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     

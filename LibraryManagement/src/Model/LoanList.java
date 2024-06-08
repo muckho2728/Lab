@@ -15,14 +15,14 @@ import java.util.Map;
 public class LoanList {
 
     private static final String FILE_NAME = "loans.dat";
-    private final HashMap<Integer, Borrow> loans;  // HashMap for efficient loan storage
+    private final HashMap<Integer, Loan> loans;  // HashMap for efficient loan storage
 
     public LoanList() {
-        loans = (HashMap<Integer, Borrow>) readLoansFromFile();
+        loans = (HashMap<Integer, Loan>) readLoansFromFile();
     }
 
-    private Map<Integer, Borrow> readLoansFromFile() {
-        Map<Integer, Borrow> loanMap = new HashMap<>();
+    private Map<Integer, Loan> readLoansFromFile() {
+        Map<Integer, Loan> loanMap = new HashMap<>();
         File file = new File(FILE_NAME);
         if (!file.exists()) {
             return loanMap;
@@ -31,7 +31,7 @@ public class LoanList {
             String line;
             while ((line = br.readLine()) != null ) {
                 if (!line.isEmpty()) {
-                    Borrow borrow = parseLoanFromFile(line);
+                    Loan borrow = parseLoanFromFile(line);
                     if (borrow != null ) {
                         loanMap.put(borrow.getBookID(), borrow);
                     }
@@ -45,7 +45,7 @@ public class LoanList {
         return loanMap;
     }
         
-    private Borrow parseLoanFromFile (String line) {
+    private Loan parseLoanFromFile (String line) {
         String[] data = line.split(" : ");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         try {
@@ -54,7 +54,7 @@ public class LoanList {
             int usersID = Integer.parseInt(data[2]);
             LocalDate borrowDate = LocalDate.parse(data[3], formatter);
             LocalDate returnDate = LocalDate.parse(data[4], formatter);
-            return new Borrow(transactionID, bookID, usersID, borrowDate, returnDate);
+            return new Loan(transactionID, bookID, usersID, borrowDate, returnDate);
         } catch (NumberFormatException e) {
             System.err.println("Error parsing data: " + line);
             return null; // Handle invalid data gracefully
@@ -63,7 +63,7 @@ public class LoanList {
     
     private boolean saveLoanToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            for (Borrow loan : loans.values()) {
+            for (Loan loan : loans.values()) {
                 bw.write(loan.toString() + "\n");
             }
             return true;
@@ -73,7 +73,7 @@ public class LoanList {
         }
     }
     // Add a loan (consider checking for existing borrow for the same book)
-    public boolean addLoan(Borrow loan) {
+    public boolean addLoan(Loan loan) {
         if (!loans.containsKey(loan.getTransactionID())) {
             loans.put(loan.getTransactionID(), loan);
             return true;
@@ -86,7 +86,7 @@ public class LoanList {
     // Update loan information (handle potential loan not found)
     public boolean updateLoan(int transactionID, LocalDate returnDate) {
         if (loans.containsKey(transactionID)) {
-            Borrow loan = loans.get(transactionID);
+            Loan loan = loans.get(transactionID);
             loan.setReturnDate(returnDate);
             return true;
         } else {
@@ -97,7 +97,7 @@ public class LoanList {
 
     
     // Get all loans (or filter based on criteria)
-    public Map<Integer, Borrow> getAllLoans() {
+    public Map<Integer, Loan> getAllLoans() {
         return loans; // Return the entire HashMap (modify if needed)
     }
 }

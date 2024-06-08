@@ -9,7 +9,8 @@ import java.time.LocalDate;
 public class BookController extends Menu {
 
     private static BookList bookList;
-
+    private static Book book;
+    
     public BookController(BookList bookRepository) {
         super("Book Management", new String[]{
                 "Add a new Book",
@@ -37,13 +38,10 @@ public class BookController extends Menu {
                 deleteBook();
                 break;
             case 4:
-                showAllBooks();
+//                showAllBooks();
                 break;
             case 5:
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Invalid Choice!");
+                return;
         }
     }
 
@@ -114,8 +112,34 @@ public class BookController extends Menu {
             System.out.println("Book not found!");
         }
     }
+/*private int bookID;
+        private String bookTitle;
+        private String author;
+        private LocalDate publicationYear;
+        private String publisher;
+        private double isbn;
+        private boolean activeBook;*/
+//    public void displayEventList(BookList bookList) {
+//    if (bookList.isEmpty()) {
+//        System.out.println("List is empty!");
+//    } else {
+//        System.out.println("| BookID   | Title           | Author         | Publication Year  | Publisher      | ISBN            | Active Book      |");
+//        System.out.println("|----------|-----------------|----------------|-------------------|----------------|-----------------|------------------|");
+//
+//        bookList.forEach((book) -> {
+//            System.out.printf("| %-8d | %-14s | %-14s | %-16s | %-16s | %-17d | %-16s |\n",
+//                    book.getBookID(), book.getBookTitle(), book.get(),
+//                    event.getDateOfStart(), event.getDateOfEnd(), event.getEventAttendence(),
+//                    event.getStatus());
+//        });
+//    }
 
-    private void showAllBooks() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    private void showAllBooks() {
+//                for (Book book : bookList.getAllBooks()) {
+//              System.out.println(book); // Assuming Book class has a toString() method for displaying details
+//            }
+//            if (bookList.getAllBooks().isEmpty()) {
+//              System.out.println("There are no books currently in the library.");
+//            }
+//          }
 }

@@ -32,10 +32,8 @@ public class UserController extends Menu {
                 deleteUser();
                 break;
             case 4:
-                // Exit to main menu
-                break;
-            default:
-                System.out.println("Invalid choice!");
+                return;
+               
         }
     }
 

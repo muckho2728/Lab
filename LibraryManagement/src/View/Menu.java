@@ -56,6 +56,7 @@ public abstract class Menu {
     public void run() {
         while(true) {
             int n = getSelected();
+            if(n==5) return;
             execute(n);
         }
     }

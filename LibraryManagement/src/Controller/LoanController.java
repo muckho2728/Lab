@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Borrow;
+import Model.Loan;
 import Model.LoanList;
 import View.Helper;
 import View.Menu;
@@ -16,7 +16,7 @@ public class LoanController extends Menu {
     }
 
     public void borrowBook() {
-        Borrow loan = new Borrow(); 
+        Loan loan = new Loan(); 
         if (loanList.addLoan(loan)) {
             System.out.println("Book borrowed successfully!");
         }
@@ -34,13 +34,13 @@ public class LoanController extends Menu {
     }
 
     public void viewLoans() {
-        Map<Integer, Borrow> loans = loanList.getAllLoans();
+        Map<Integer, Loan> loans = loanList.getAllLoans();
         if (loans.isEmpty()) {
             System.out.println("No loans found!");
         } else {
             System.out.println("**Loan Information**");
             loans.values().forEach((loan) -> {
-                System.out.println(loan); // Use Borrow class toString() for formatted output
+                System.out.println(loan); // Use Loan class toString() for formatted output
             });
         }
     }
