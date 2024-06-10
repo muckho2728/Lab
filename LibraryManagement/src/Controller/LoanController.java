@@ -9,16 +9,19 @@ import java.util.Map;
 
 public class LoanController extends Menu {
 
-    private final LoanList loanList;
-
-    public LoanController(LoanList loanList) {
-        super("Loan Management Menu", new String[]{
+    static String[] mainMenu = {
                 "Borrow books",
                 "Update borrowing information.",
                 "Display all currently borrowed books",
                 "Back to Main Menu"
-        });
-        this.loanList = loanList;
+        };
+    
+    private static LoanList loanList;
+    private static Loan loan;
+
+    public LoanController(LoanList loanList) {
+        super("Loan Management Menu", mainMenu);
+        LoanController.loanList = loanList;
     }
 
     @Override
@@ -53,6 +56,8 @@ public class LoanController extends Menu {
         Loan loan = new Loan(); 
         if (loanList.addLoan(loan)) {
             System.out.println("Book borrowed successfully!");
+        }else {
+            System.out.println("Error: Failed to borrow book. Please try again.");
         }
     }
 
@@ -60,7 +65,7 @@ public class LoanController extends Menu {
         int transactionID = Helper.getInt("Enter Loan Transaction ID to return");
         LocalDate returnDate = Helper.getLocalDate(""); 
 
-        if (loanList.updateLoan(transactionID, returnDate)) {
+        if (loanList.updateLoan(loan)) {
             System.out.println("Book returned successfully!");
         } else {
             System.out.println("Error: Loan not found or already returned!");

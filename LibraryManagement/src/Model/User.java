@@ -9,6 +9,7 @@ public class User {
         private int phoneNumber;
         private String email;
         private boolean activeUser;
+        private byte deleteFlag;
 
     public User() {
     }
@@ -22,16 +23,30 @@ public class User {
         this.activeUser = activeUser;
     }
 
+    public User(int userID, String name, LocalDate dateOfBirth, int phoneNumber, String email, boolean activeUser, byte deleteFlag) {
+        this.userID = userID;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.activeUser = activeUser;
+        this.deleteFlag = deleteFlag;
+    }
+    
+    public byte getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(byte deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+    
     public User(String name, LocalDate dateOfBirth, int phoneNumber, String email, boolean activeUser) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.activeUser = activeUser;
-    }
-
-    User(String userId, String userName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public int getUserID() {
@@ -82,6 +97,21 @@ public class User {
         this.activeUser = activeUser;
     }
 
+    private String statusToString(boolean activeUser){
+        String result = activeUser ? "Available" : "Not Available";
+        return result;
+    }
+    
+    public String convertToLine(){
+        return userID +
+                " : " + name + 
+                " : " + dateOfBirth + 
+                " : " + phoneNumber +
+                " : " + email + 
+                " : " + activeUser + 
+                " : " + deleteFlag ;
+    }
+    
     @Override
     public String toString() {
         return "User{" + "userID=" + userID +
@@ -91,10 +121,5 @@ public class User {
                 ", email=" + email +
                 ", activeUser=" + activeUser + '}';
     }
-
-    void setPhoneNumber(String phone) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-        
         
 }

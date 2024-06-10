@@ -11,38 +11,39 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class LoanList {
 
-    private static final String FILE_NAME = "loans.dat";
-    private final HashMap<Integer, Loan> loans;  // HashMap for efficient loan storage
-
+    private String fileName;
+    private final Map<Integer, Loan> loans;  // HashMap for efficient loan 
+    
+    Map<Integer, Loan> loanMap = new HashMap<>();
+    
     public LoanList() {
-        loans = (HashMap<Integer, Loan>) readLoansFromFile();
+        loans =  readLoansFromFile();
     }
 
     private Map<Integer, Loan> readLoansFromFile() {
-        Map<Integer, Loan> loanMap = new HashMap<>();
-        File file = new File(FILE_NAME);
-        if (!file.exists()) {
-            return loanMap;
-        }
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+        Map<Integer, Loan> loans = new HashMap<>();
+        File file = new File("loans.dat");
+        String fileName = file.getAbsolutePath();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null ) {
                 if (!line.isEmpty()) {
                     Loan borrow = parseLoanFromFile(line);
                     if (borrow != null ) {
-                        loanMap.put(borrow.getBookID(), borrow);
+                        loans.put(borrow.getBookID(), borrow);
                     }
                 }
             }
         } catch (FileNotFoundException e) {
-            System.err.println("Error opening file: " + FILE_NAME);
+            System.err.println("Error opening file: " + fileName);
         } catch (IOException e) {
-            System.err.println("Error reading file: " + FILE_NAME);
+            System.err.println("Error reading file: " + fileName);
         }
-        return loanMap;
+        return loans;
     }
         
     private Loan parseLoanFromFile (String line) {
@@ -61,43 +62,85 @@ public class LoanList {
         }
     }
     
-    private boolean saveLoanToFile() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
+    private void saveLoanToFile() {
+        try (FileWriter fileWriter = new FileWriter("loans.dat")) {
             for (Loan loan : loans.values()) {
-                bw.write(loan.toString() + "\n");
+                fileWriter.write(loan.convertToLine());
+                fileWriter.write(System.lineSeparator());
             }
-            return true;
-        } catch (IOException e) {
-            System.err.println("Error writing to file: " + FILE_NAME);
-            return false;
+        }catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
         }
     }
+    
     // Add a loan (consider checking for existing borrow for the same book)
     public boolean addLoan(Loan loan) {
-        if (!loans.containsKey(loan.getTransactionID())) {
-            loans.put(loan.getTransactionID(), loan);
-            return true;
-        } else {
-            System.out.println("Error: Loan transaction ID already exists!");
-            return false;
+        int maxID = 0;
+        byte delFlag = 0;
+        for (Loan l : loans.values()) {
+            int currentID = l.getTransactionID();
+            if (currentID > maxID) {
+                maxID = currentID;
+            }
         }
+        loan.setTransactionID(maxID + 1);
+//        loan.setDeleteFlag(delFlag);
+        loans.put(loan.getTransactionID()+ 1, loan); // Assuming bookID is the key
+        saveLoanToFile();
+        return true;
     }
 
     // Update loan information (handle potential loan not found)
-    public boolean updateLoan(int transactionID, LocalDate returnDate) {
-        if (loans.containsKey(transactionID)) {
-            Loan loan = loans.get(transactionID);
-            loan.setReturnDate(returnDate);
-            return true;
-        } else {
-            System.out.println("Error: Loan not found!");
-            return false;
-        }
+    public boolean updateLoan(Loan loan) {
+       for (Loan l : loans.values()) {
+            if(l.getTransactionID()== loan.getTransactionID()) {
+                l.setBookID(loan.getBookID());
+                l.setBorrowDate(loan.getBorrowDate());
+                l.setReturnDate(loan.getReturnDate());
+                l.setUserID(loan.getUserID());
+                
+                saveLoanToFile();
+                return true;
+            }
+        } return false;
     }
 
     
     // Get all loans (or filter based on criteria)
     public Map<Integer, Loan> getAllLoans() {
-        return loans; // Return the entire HashMap (modify if needed)
+        return new HashMap<>(loans); // Return the entire HashMap (modify if needed)
+        
+}
+    
+    public void displayBookList(Map<Integer, Loan> loanList){
+     if(loanList.isEmpty()) {
+         System.out.println("List is empty!");
+     }else{
+         loanList.values().forEach((l) -> {
+             System.out.println(l);
+         });
+     }
+    }
+    
+    public Map<Integer, Loan> searchLoan(Map<Integer, Loan> loanList, Predicate<Loan> s) {
+        Map<Integer, Loan> result = new HashMap<>();
+        loans.values().stream().filter((loan) -> (s.test(loan))).forEachOrdered((loan) -> {
+            result.put(Integer.SIZE, loan);
+        });
+        return result;
+    }
+
+    public Loan getLoan (int transactionID){
+        Loan loan = new Loan();
+        int size = loans.size();
+        for(int i = 0; i<size; i++) {
+            if(transactionID == loans.get(i).getTransactionID()){
+                loan = loans.get(i);
+            }
+        }return loan;
+    }
+    
+    public boolean isActiveLoan (int ID){
+        return loans.values().stream().anyMatch((loan) -> (loan.getTransactionID()==ID));
     }
 }

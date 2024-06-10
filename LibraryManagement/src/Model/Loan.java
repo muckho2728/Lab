@@ -72,6 +72,15 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
+    public String convertToLine(){
+        return   
+                transactionID +
+                " : " + bookID + 
+                " : " + userID +
+                " : " + borrowDate +
+                " : " + returnDate;
+    }
+    
     @Override
     public String toString() {
         return "Borrow{" + "transactionID=" + transactionID +
@@ -79,6 +88,6 @@ public class Loan {
                 ", borrowDate=" + borrowDate +
                 ", returnDate=" + returnDate + '}';
     }
-        
-        
+
+    
 }
