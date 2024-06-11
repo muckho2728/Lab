@@ -6,14 +6,14 @@ public class Book {
         private String author;
         private int publicationYear;
         private String publisher;
-        private double isbn;
+        private int isbn;
         private boolean activeBook;
         private byte deleteFlag;
 
     public Book() {
     }
 
-    public Book(int bookID, String bookTitle, String author, int publicationYear, String publisher, double isbn, boolean activeBook) {
+    public Book(int bookID, String bookTitle, String author, int publicationYear, String publisher, int isbn, boolean activeBook) {
         this.bookID = bookID;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -23,7 +23,7 @@ public class Book {
         this.activeBook = activeBook;
     }
 
-    public Book(int bookID, String bookTitle, String author, int publicationYear, String publisher, double isbn, boolean activeBook, byte deleteFlag) {
+    public Book(int bookID, String bookTitle, String author, int publicationYear, String publisher, int isbn, boolean activeBook, byte deleteFlag) {
         this.bookID = bookID;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -34,7 +34,7 @@ public class Book {
         this.deleteFlag = deleteFlag;
     }
     
-    public Book(String bookTitle, String author, int publicationYear, String publisher, double isbn, boolean activeBook) {
+    public Book(String bookTitle, String author, int publicationYear, String publisher, int isbn, boolean activeBook) {
         this.bookTitle = bookTitle;
         this.author = author;
         this.publicationYear = publicationYear;
@@ -92,11 +92,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public double getIsbn() {
+    public int getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(double isbn) {
+    public void setIsbn(int isbn) {
         this.isbn = isbn;
     }
 
