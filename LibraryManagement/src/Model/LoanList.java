@@ -33,7 +33,7 @@ public class LoanList {
             while ((line = br.readLine()) != null ) {
                 if (!line.isEmpty()) {
                     Loan borrow = parseLoanFromFile(line);
-                    if (borrow != null ) {
+                    if (borrow != null && borrow.getBorrowDate() != null && borrow.getReturnDate() != null ) {
                         loans.put(borrow.getBookID(), borrow);
                     }
                 }
@@ -53,8 +53,16 @@ public class LoanList {
             int transactionID = Integer.parseInt(data[0]);
             int bookID = Integer.parseInt(data[1]);
             int usersID = Integer.parseInt(data[2]);
-            LocalDate borrowDate = LocalDate.parse(data[3], formatter);
-            LocalDate returnDate = LocalDate.parse(data[4], formatter);
+            // Handle potential null values for borrow and return dates
+            LocalDate borrowDate = null;
+            if (!data[3].equals("null")) {
+                borrowDate = LocalDate.parse(data[3], formatter);
+            }
+
+            LocalDate returnDate = null;
+            if (!data[4].equals("null")) {
+                returnDate = LocalDate.parse(data[4], formatter);
+            }
             return new Loan(transactionID, bookID, usersID, borrowDate, returnDate);
         } catch (NumberFormatException e) {
             System.err.println("Error parsing data: " + line);

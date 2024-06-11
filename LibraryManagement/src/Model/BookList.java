@@ -99,13 +99,19 @@ public class BookList {
         } return false;
     }
     // Get a book by ID (assuming a unique book ID exists)
-    public Map<Integer, Book> getBookToDisplay(){
+//    public Map<Integer, Book> getBookToDisplay(){
+//        Map<Integer, Book> result = new HashMap<>();
+//        books.values().stream().filter((b) -> (b.getDeleteFlag()==0)).forEachOrdered((Book b) -> {
+//            result.put(Integer.SIZE, b);
+//        });
+//        return result;
+//    }
+    public Map<Integer, Book> getBookToDisplay() {
         Map<Integer, Book> result = new HashMap<>();
-        books.values().stream().filter((b) -> (b.getDeleteFlag()==0)).forEachOrdered((Book b) -> {
-            result.put(Integer.SIZE, b);
-        });
+        books.values().stream().filter(b -> b.getDeleteFlag() == 0) // Filter based on deleteFlag
+            .forEachOrdered(b -> result.put(b.getBookID(), b));
         return result;
-    }
+}
     
     public Book getBookByID(int bookID) {
         for (Book b : books.values()) {
@@ -150,15 +156,29 @@ public class BookList {
         return result;
     }
 
-    public Book getBook(int bookID){
-        Book book = new Book();
-        int size = books.size();
-        for(int i = 0; i<size; i++) {
-            if(bookID == books.get(i).getBookID()){
-                book = books.get(i);
-            }
-        }return book;
-    }
+//    public Book getBook(int bookID){
+//        Book book = new Book();
+//        int size = books.size();
+//        for(int i = 0; i<size; i++) {
+//            if(bookID == books.get(i).getBookID()){
+//                book = books.get(i);
+//            }
+//        }return book;
+//    }
+    public Book getBook(int bookID) {
+        // Check for empty collection (optional)
+        if (books.isEmpty()) {
+          return null;
+        }
+
+        for (int i = 0; i < books.size(); i++) {
+          Book book = books.get(i);
+          if (book != null && bookID == book.getBookID()) {
+            return book;
+          }
+        }
+        return null; // Book not found
+}
     
     public boolean isActiveBook (int ID){
         return books.values().stream().anyMatch((book) -> (book.getBookID()==ID));

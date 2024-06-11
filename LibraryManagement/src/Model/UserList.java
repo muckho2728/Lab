@@ -21,7 +21,7 @@ public class UserList {
     }
 
     private Map<Integer, User> readUsersFromFile () {
-        Map<Integer, User> userMap = new HashMap<>();
+        Map<Integer, User> users = new HashMap<>();
         File file = new File("users.dat");
         String fileName = file.getAbsolutePath();
         try {
@@ -42,12 +42,13 @@ public class UserList {
             System.err.println("Error reading file: " + fileName);
         }
 
-        return userMap;
+        return users;
+
     }
     
     private User parseUserFromFile (String line) {
         String[] data = line.split(" : ");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
             int userID = Integer.parseInt(data[0]);
             String name = data[1];
@@ -93,11 +94,10 @@ public class UserList {
         } return false;
     }
 
-    public Map<Integer, User> getUserToDisplay(){
+    public Map<Integer, User> getUserToDisplay() {
         Map<Integer, User> result = new HashMap<>();
-        users.values().stream().filter((b) -> (b.getDeleteFlag()==0)).forEachOrdered((User b) -> {
-            result.put(Integer.SIZE, b);
-        });
+        users.values().stream().filter(b -> b.getDeleteFlag() == 0) // Filter based on deleteFlag
+            .forEachOrdered(b -> result.put(b.getUserID(), b));
         return result;
     }
     
@@ -122,7 +122,7 @@ public class UserList {
         return true;
         }
 
- public Map<Integer, User> getUserList(){
+    public Map<Integer, User> getUserList(){
         return new HashMap<>(users);
     }
     
@@ -145,14 +145,19 @@ public class UserList {
         return result;
     }
 
+
     public User getUser(int userID){
-        User user = new User();
-        int size = users.size();
-        for(int i = 0; i<size; i++) {
-            if(userID == users.get(i).getUserID()){
-                user = users.get(i);
-            }
-        }return user;
+        if (users.isEmpty()) {
+          return null;
+        }
+
+        for (int i = 0; i < users.size(); i++) {
+          User user = users.get(i);
+          if (user != null && userID == user.getUserID()) {
+            return user;
+          }
+        }
+        return null;
     }
     
     public boolean isActiveUser (int ID){

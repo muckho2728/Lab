@@ -12,22 +12,13 @@ public class Main {
         UserList userList = new UserList();
 
         Menu mainMenu = new Menu("Library Management", new String[]{
-          "1.Book menu",
-          "2. User menu",
-          "3. Loan menu",
-          "4. Exit!"
-        }) {
+          "Book menu",
+          "User menu",
+          "Loan menu",
+          "Exit!" }) {
             @Override
             public void execute(int n) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-
-        while (true) {
-//          mainMenu.display();
-          int choice = mainMenu.getSelected();
-
-          switch (choice) {
+                switch (n) {
             case 1:
               new BookController(bookList).run();
               break;
@@ -38,10 +29,10 @@ public class Main {
               new LoanController(loanList).run();
               break;
             case 4:
-              return;
-            default:
-              System.out.println("Invalid Choice!");
+              System.exit(0);
           }
-        }
-      }
+            }
+        }; 
+        mainMenu.run();
+    }
 }

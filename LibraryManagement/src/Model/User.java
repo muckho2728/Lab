@@ -32,6 +32,8 @@ public class User {
         this.activeUser = activeUser;
         this.deleteFlag = deleteFlag;
     }
+
+
     
     public byte getDeleteFlag() {
         return deleteFlag;

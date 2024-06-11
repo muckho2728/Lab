@@ -54,14 +54,9 @@ public abstract class Menu {
 //------------------------------------------------------------------------------
 
     public void run() {
-        while(true) {
+        while (true) {
             int n = getSelected();
-////            if(n==5) return;
-//              // Check for exit conditions
-            if (n == 0 || n == -1) {
-                break; // Exit condition
-            }
-        execute(n);
+            execute(n);
         }
     }
 }

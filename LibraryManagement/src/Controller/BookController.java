@@ -42,6 +42,7 @@ public class BookController extends Menu {
                 break;
             case 4:
 //                showAllBooks();
+                displayBookList(bookList.getBookToDisplay());
                 break;
             case 5:
                 break;
@@ -120,39 +121,37 @@ public class BookController extends Menu {
 //        
 //}
 
+//    
     private void updateBookInformation() {
-        displayBookList(bookList.getBookToDisplay()); // Assuming it doesn't return a collection
-        int id = Helper.getInt("Enter Book ID you want to update");
-        Book existBook = bookList.getBook(id);
-        if (existBook == null) {
-            System.out.println("Book Not found!");
-            return;
-        }
-
-        String bookTitle = Helper.getString("Enter Book Name");
-        String author = Helper.getString("Enter Book Author");
-        int publicationYear = Helper.getInt("Enter Book Publication Year");
-        String publisher = Helper.getString("Enter Book Publisher");
-        boolean activeBook = Helper.getStatus("Enter status 1 - Available, 0 - Not Available");
-
-        // Update the existing book object
-        existBook.setBookTitle(bookTitle);
-        existBook.setAuthor(author);
-        existBook.setPublicationYear(publicationYear);
-        existBook.setPublisher(publisher);
-        existBook.setActiveBook(activeBook);
-
-        boolean result = bookList.updateBook(existBook); // Pass the updated book
-
-        if (result) {
-            System.out.println("| BookID | Title   | Author  | Publication Year | Publisher | ISBN  | Active Book |");
-            System.out.printf("| %-8d | %-14s | %-14s | %-16d | %-16s | %-17d | %-16s |\n",
-                existBook.getBookID(), existBook.getBookTitle(), existBook.getAuthor(), existBook.getPublicationYear(),
-                existBook.getPublisher(), existBook.getIsbn(), existBook.isActiveBook() ? "Yes" : "No");
-        } else {
-            System.out.println("Update fail!");
+    displayBookList(bookList.getBookToDisplay()); // Assuming it doesn't return a collection
+    int id = Helper.getInt("Enter Book ID you want to update");
+    Book existBook = bookList.getBook(id);
+    if (existBook == null) {
+      System.out.println("Book Not found!");
+      return;
     }
+
+    String bookTitle = Helper.getString("Enter Book Name");
+    String author = Helper.getString("Enter Book Author");
+    int publicationYear = Helper.getInt("Enter Book Publication Year");
+    String publisher = Helper.getString("Enter Book Publisher");
+    boolean activeBook = Helper.getStatus("Enter status 1 - Available, 0 - Not Available");
+
+    // Update properties of the existing book
+    existBook.setBookTitle(bookTitle);
+    existBook.setAuthor(author);
+    existBook.setPublicationYear(publicationYear);
+    existBook.setPublisher(publisher);
+    existBook.setActiveBook(activeBook);
+
+    boolean result = bookList.updateBook(existBook); // Pass the existing book
+
+    if (result) {
+      System.out.println("Update success!");
+    } else {
+      System.out.println("Update fail!");
     }
+}
     
 //------------------------------------------------------------------------------
 
@@ -168,16 +167,23 @@ public class BookController extends Menu {
             }
     }
     
+//    public void displayBookList(Map<Integer, Book> books){
+//        bookList.displayBookList(bookList.getBookList());
+//    }
+    
     public void displayBookList(Map<Integer, Book> bookList){
     if(bookList.isEmpty()) {
         System.out.println("List is empty!");
     }else{
-        System.out.println("| BookID | Title      | Author   | Publication Year | Publisher  | ISBN   | Active Book  |");
-        System.out.println("|---------|------------|------------|------------------|-------------|-----------|---------------|");
-        bookList.forEach((Integer bookId, Book book) -> {
-            System.out.printf("| %-8d | %-14s | %-14s | %-16d | %-16s | %-17d | %-16s |\n",
-                bookId, book.getBookTitle(), book.getAuthor(), book.getPublicationYear(), 
-                book.getPublisher(), book.getIsbn(), book.isActiveBook());
+        System.out.printf("| %-8s | %-20s | %-14s | %-16s | %-16s | %-12s | %-16s |\n",
+                "BookID", "Title", "Author", "Publication Year", "Publisher", "ISBN", "Active Book");
+        System.out.println("|----------|----------------------|----------------|------------------|------------------|--------------|------------------|");
+
+        // Format each book entry with consistent spacing
+        bookList.values().forEach((b) -> {
+            System.out.printf("| %-8s | %-20s | %-14s | %-16s | %-16s | %-12s | %-16s |\n",
+                    b.getBookID(), b.getBookTitle(), b.getAuthor(), b.getPublicationYear(),
+                    b.getPublisher(), b.getIsbn(), String.valueOf(b.isActiveBook()));
         });
     }
 }
