@@ -77,7 +77,8 @@ public class LoanController extends Menu {
         int userID = Helper.getInt("Enter User ID ");
         LocalDate borrowDate = Helper.getLocalDate("Enter Date To Borrow Book");
         LocalDate returnDate = Helper.getLocalDate("Enter Date To Return Book");
-        boolean status = Helper.getStatus("Enter 1 - Late , 0 - Done");
+        boolean status = Helper.getStatus("Enter 1 - Borrowing , 0 - Returned");
+        
         loan = new Loan(bookID, userID, borrowDate, returnDate, status); 
         boolean result = loanList.addLoan(loan);
             if(result){

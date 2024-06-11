@@ -6,14 +6,14 @@ public class Book {
         private String author;
         private int publicationYear;
         private String publisher;
-        private int isbn;
+        private String isbn;
         private boolean activeBook;
         private byte deleteFlag;
 
     public Book() {
     }
 
-    public Book(int bookID, String bookTitle, String author, int publicationYear, String publisher, int isbn, boolean activeBook) {
+    public Book(int bookID, String bookTitle, String author, int publicationYear, String publisher, String isbn, boolean activeBook) {
         this.bookID = bookID;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -23,7 +23,7 @@ public class Book {
         this.activeBook = activeBook;
     }
 
-    public Book(int bookID, String bookTitle, String author, int publicationYear, String publisher, int isbn, boolean activeBook, byte deleteFlag) {
+    public Book(int bookID, String bookTitle, String author, int publicationYear, String publisher, String isbn, boolean activeBook, byte deleteFlag) {
         this.bookID = bookID;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -34,7 +34,7 @@ public class Book {
         this.deleteFlag = deleteFlag;
     }
     
-    public Book(String bookTitle, String author, int publicationYear, String publisher, int isbn, boolean activeBook) {
+    public Book(String bookTitle, String author, int publicationYear, String publisher, String isbn, boolean activeBook) {
         this.bookTitle = bookTitle;
         this.author = author;
         this.publicationYear = publicationYear;
@@ -92,11 +92,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public int getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(int isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
@@ -135,7 +135,7 @@ public class Book {
     @Override
     public String toString() {
             return String.format("Book{" +
-                    "BookID=%-8d, Book Title='%-14s', Author='%-14s', Publication Year='%-16d', Publisher='%-16s', ISBN=%-17d, Active Book='%-16s'}",
+                    "BookID=%-8d, Book Title='%-14s', Author='%-14s', Publication Year='%-16d', Publisher='%-16s', ISBN=%-17s, Active Book='%-16s'}",
                     bookID, bookTitle, author, publicationYear, publisher, isbn, statusToString(activeBook));
 
     }

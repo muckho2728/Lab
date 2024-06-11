@@ -67,7 +67,7 @@ public class BookController extends Menu {
             String author = Helper.getString("Enter Book Author");
             int publicationYear = Helper.getInt("Enter Book Publication Year");
             String publisher = Helper.getString("Enter Book Publisher");
-            int isbn = Helper.getInt("Enter Book ISBN");
+            String isbn = Helper.getString("Enter Book ISBN");
             boolean activeBook = Helper.getStatus("Enter status 1 - Available, 0 - Not Available");
             book = new Book(bookTitle, author, publicationYear, publisher, isbn, activeBook);
             boolean result = bookList.addBook(book);
@@ -136,7 +136,7 @@ public class BookController extends Menu {
     String author = Helper.getString("Enter Book Author");
     int publicationYear = Helper.getInt("Enter Book Publication Year");
     String publisher = Helper.getString("Enter Book Publisher");
-    int isbn = Helper.getInt("Enter Book ISBN");
+    String isbn = Helper.getString("Enter Book ISBN");
     boolean activeBook = Helper.getStatus("Enter status 1 - Available, 0 - Not Available");
 
     // Update properties of the existing book

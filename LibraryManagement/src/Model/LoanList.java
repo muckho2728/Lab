@@ -66,9 +66,9 @@ public class LoanList {
 
             // Assuming the status is at index 5 (check your data format):
             boolean status = data.length >= 6 ? Boolean.parseBoolean(data[5]) : false; // Default to false if missing
-
+            byte deleteFlag = Byte.parseByte(data[6]);
             // Add logic to handle deleteFlag (if relevant)
-            return new Loan(transactionID, bookID, bookID, borrowDate, returnDate, status);
+            return new Loan(transactionID, bookID, bookID, borrowDate, returnDate, status, deleteFlag);
         } catch (NumberFormatException e) {
             System.err.println("Error parsing data: " + line);
             return null;
@@ -97,7 +97,7 @@ public class LoanList {
             }
         }
         loan.setTransactionID(maxID + 1);
-//        loan.setDeleteFlag(delFlag);
+        loan.setDeleteFlag(delFlag);
         loans.put(loan.getTransactionID()+ 1, loan); // Assuming bookID is the key
         saveLoanToFile();
         return true;

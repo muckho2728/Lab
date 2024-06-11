@@ -111,7 +111,8 @@ public class Loan {
                 " : " + userID +
                 " : " + borrowDate +
                 " : " + returnDate +
-                " : " + status;
+                " : " + status +
+                " : " + deleteFlag ;
     }
     
     @Override

@@ -57,7 +57,7 @@ public class BookList {
             String author = data[2];
             int publicationYear = Integer.parseInt(data[3]);
             String publisher = data[4];
-            int isbn = Integer.parseInt(data[5]);
+            String isbn = (data[5]);
             boolean isActive = Boolean.parseBoolean(data[6]);
             return new Book(bookID, title, author, publicationYear, publisher, isbn, isActive);
         } catch (NumberFormatException e) {
