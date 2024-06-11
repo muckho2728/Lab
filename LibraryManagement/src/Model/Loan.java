@@ -9,29 +9,40 @@ public class Loan {
         private int userID;
         private LocalDate borrowDate;
         private LocalDate returnDate;
+        private boolean status;
+        private byte deleteFlag;
 
+    
     public Loan() {
     }
 
-    public Loan(int transactionID, int bookID, int userID, LocalDate borrowDate, LocalDate returnDate) {
+    public Loan(int transactionID, int bookID, int userID, LocalDate borrowDate, LocalDate returnDate, boolean status, byte deleteFlag) {
         this.transactionID = transactionID;
         this.bookID = bookID;
         this.userID = userID;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
+        this.status = status;
+        this.deleteFlag = deleteFlag;
     }
 
-    public Loan(int bookID, int userID, LocalDate borrowDate, LocalDate returnDate) {
+    public Loan(int transactionID, int bookID, int userID, LocalDate borrowDate, LocalDate returnDate, boolean status) {
+        this.transactionID = transactionID;
         this.bookID = bookID;
         this.userID = userID;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
+        this.status = status;
     }
-
-    Loan(String generateLoanId, User user, Book book) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public Loan(int bookID, int userID, LocalDate borrowDate, LocalDate returnDate, boolean status) {
+        this.bookID = bookID;
+        this.userID = userID;
+        this.borrowDate = borrowDate;
+        this.returnDate = returnDate;
+        this.status = status;
     }
-
+    
     public int getTransactionID() {
         return transactionID;
     }
@@ -72,13 +83,35 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+    private String statusToString(boolean status){
+        String result = status ? "Available" : "Not Available";
+        return result;
+    }
+    
+    public byte getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(byte deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+    
     public String convertToLine(){
         return   
                 transactionID +
                 " : " + bookID + 
                 " : " + userID +
                 " : " + borrowDate +
-                " : " + returnDate;
+                " : " + returnDate +
+                " : " + status;
     }
     
     @Override
@@ -86,7 +119,8 @@ public class Loan {
         return "Borrow{" + "transactionID=" + transactionID +
                 ", bookID=" + bookID + ", userID=" + userID +
                 ", borrowDate=" + borrowDate +
-                ", returnDate=" + returnDate + '}';
+                ", returnDate=" + returnDate +
+                ", status=" + status +'}';
     }
 
     

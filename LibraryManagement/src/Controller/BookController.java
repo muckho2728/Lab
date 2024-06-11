@@ -67,8 +67,9 @@ public class BookController extends Menu {
             String author = Helper.getString("Enter Book Author");
             int publicationYear = Helper.getInt("Enter Book Publication Year");
             String publisher = Helper.getString("Enter Book Publisher");
+            int isbn = Helper.getInt("Enter Book ISBN");
             boolean activeBook = Helper.getStatus("Enter status 1 - Available, 0 - Not Available");
-            book = new Book(bookTitle, author, publicationYear, publisher, activeBook);
+            book = new Book(bookTitle, author, publicationYear, publisher, isbn, activeBook);
             boolean result = bookList.addBook(book);
             if(result){
                 System.out.println("Create success!");
@@ -78,7 +79,7 @@ public class BookController extends Menu {
         }
     
     private void checkActiveBook(){
-        int ID = Helper.getInt("Enter ID event");
+        int ID = Helper.getInt("Enter ID Book");
         if (bookList.isActiveBook(ID)){
             System.out.println("Exist Book");
         }else{
@@ -135,6 +136,7 @@ public class BookController extends Menu {
     String author = Helper.getString("Enter Book Author");
     int publicationYear = Helper.getInt("Enter Book Publication Year");
     String publisher = Helper.getString("Enter Book Publisher");
+    int isbn = Helper.getInt("Enter Book ISBN");
     boolean activeBook = Helper.getStatus("Enter status 1 - Available, 0 - Not Available");
 
     // Update properties of the existing book
@@ -142,6 +144,7 @@ public class BookController extends Menu {
     existBook.setAuthor(author);
     existBook.setPublicationYear(publicationYear);
     existBook.setPublisher(publisher);
+    existBook.setIsbn(isbn);
     existBook.setActiveBook(activeBook);
 
     boolean result = bookList.updateBook(existBook); // Pass the existing book
@@ -175,13 +178,13 @@ public class BookController extends Menu {
     if(bookList.isEmpty()) {
         System.out.println("List is empty!");
     }else{
-        System.out.printf("| %-8s | %-20s | %-14s | %-16s | %-16s | %-12s | %-16s |\n",
+        System.out.printf("| %-6s | %-22s | %-14s | %-16s | %-16s | %-12s | %-16s |\n",
                 "BookID", "Title", "Author", "Publication Year", "Publisher", "ISBN", "Active Book");
-        System.out.println("|----------|----------------------|----------------|------------------|------------------|--------------|------------------|");
+        System.out.println("|--------|------------------------|----------------|------------------|------------------|--------------|------------------|");
 
         // Format each book entry with consistent spacing
         bookList.values().forEach((b) -> {
-            System.out.printf("| %-8s | %-20s | %-14s | %-16s | %-16s | %-12s | %-16s |\n",
+            System.out.printf("| %-6s | %-22s | %-14s | %-16s | %-16s | %-12s | %-16s |\n",
                     b.getBookID(), b.getBookTitle(), b.getAuthor(), b.getPublicationYear(),
                     b.getPublisher(), b.getIsbn(), String.valueOf(b.isActiveBook()));
         });

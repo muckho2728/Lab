@@ -13,6 +13,7 @@ public class UserController extends Menu {
         "Add User",
         "Update User Information",
         "Delete User",
+        "Show All User",
         "Back to Main Menu"
     };
 
@@ -37,6 +38,9 @@ public class UserController extends Menu {
                 doDeleteUser();
                 break;
             case 4:
+                displayUserList(userList.getUserToDisplay());
+                break;
+            case 5:
                 System.exit(0);
         }
     }
@@ -46,7 +50,7 @@ public class UserController extends Menu {
         while (true) {
             int choice = getSelected();
 
-            if (choice == 4) { // Exit condition for Book Management menu
+            if (choice == 5) { // Exit condition for Book Management menu
                 break;
             }
             execute(choice);
@@ -55,10 +59,10 @@ public class UserController extends Menu {
 
     private void createNewUser() {
 
-        String name = Helper.getString("Enter new name (or leave blank to keep existing)");
-        LocalDate dateOfBirth = Helper.getLocalDate("Enter Date Of Birth");
-        String email = Helper.getString("Enter new email (or leave blank to keep existing)");
-        int phoneNumber = Helper.getInt("Enter new phone number (or leave blank to keep existing)");
+        String name = Helper.getString("Enter User Name");
+        LocalDate dateOfBirth = Helper.getLocalDate("Enter Date Of Birth User");
+        String email = Helper.getString("Enter User Email");
+        int phoneNumber = Helper.getInt("Enter User Phone Number");
         boolean activeUser = Helper.getStatus("Enter status 1 - Available, 0 - Not Available");
         user = new User(name, dateOfBirth, phoneNumber, email, activeUser);
         boolean result = userList.addUser(user);
@@ -70,11 +74,11 @@ public class UserController extends Menu {
     }
 
     private void checkActiveUser() {
-        int ID = Helper.getInt("Enter ID event");
+        int ID = Helper.getInt("Enter ID User");
         if (userList.isActiveUser(ID)) {
-            System.out.println("Exist Book");
+            System.out.println("Exist User");
         } else {
-            System.out.println("No Book Found!");
+            System.out.println("No User Found!");
         }
     }
 
@@ -98,9 +102,9 @@ public class UserController extends Menu {
             return;
         }
         LocalDate dateOfBirth = Helper.getLocalDate("Enter your Date Of Birth");
-        String name = Helper.getString("Enter new name (or leave blank to keep existing)");
-        String email = Helper.getString("Enter new email (or leave blank to keep existing)");
-        int phoneNumber = Helper.getInt("Enter new phone number (or leave blank to keep existing)");
+        String name = Helper.getString("Enter new User Name");
+        String email = Helper.getString("Enter new User Email");
+        int phoneNumber = Helper.getInt("Enter new User Phone Number");
         boolean activeUser = Helper.getStatus("Enter 1 - Available : 0 - Not Available");
         
         existUser.setDateOfBirth(dateOfBirth);
@@ -121,7 +125,7 @@ public class UserController extends Menu {
 
     private void doDeleteUser() {
         displayUserList(userList.getUserToDisplay());
-        int userID = Helper.getInt("Enter Book ID to delete");
+        int userID = Helper.getInt("Enter User ID to delete");
         boolean result = userList.deleteUser(userID);
 
         if (result) {
@@ -135,13 +139,13 @@ public class UserController extends Menu {
         if (userList.isEmpty()) {
             System.out.println("List is empty!");
         } else {
-            System.out.printf("| %-8s | %-20s | %-14s | %-16s | %-16s | %-16s |\n",
+            System.out.printf("| %-8s | %-20s | %-14s | %-16s | %-16s | %-12s |\n",
                     "UserID", "User Name", "Date Of Birth", "Email", "Phone Number", "Active Book");
             System.out.println("|----------|----------------------|----------------|------------------|------------------|--------------|");
 
             // Format each book entry with consistent spacing
             userList.values().forEach((b) -> {
-                System.out.printf("| %-8s | %-20s | %-14s | %-16s | %-16s | %-16s |\n",
+                System.out.printf("| %-8s | %-20s | %-14s | %-16s | %-16s | %-12s |\n",
                         b.getUserID(), b.getName(), b.getDateOfBirth(), b.getEmail(),
                         b.getPhoneNumber(), String.valueOf(b.isActiveUser()));
             });
